@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="ko"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은퇴설계 프로세스</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: #1c1c1e;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #f7c948;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0;
+            color: #1c1c1e;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f7c948;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .button:hover {
+            background-color: #d4a92a;
+        }
+        .columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .column {
+            flex: 1;
+            background-color: #f5f5f7;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .column h3 {
+            font-size: 18px;
+            color: #f7c948;
+        }
+        .column p {
+            font-size: 16px;
+            color: #1c1c1e;
+        }
+        canvas {
+            margin: 40px auto;
+            max-width: 700px;
+        }
+        .input-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .input-container input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f7c948;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+        .input-container button:hover {
+            background-color: #d4a92a;
+        }
+    </style>
+    <!-- Chart.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function submitCI() {
+            const ciCode = document.getElementById("ciInput").value;
+            if (ciCode) {
+                document.getElementById("ciResult").innerHTML = `입력하신 CI 코드: ${ciCode}`;
+            } else {
+                alert("CI 코드를 입력해주세요.");
+            }
+        }
+
+        // 현재 자산 분석 차트
+        function showCurrentAssetAnalysis() {
+            const content = document.getElementById("content");
+            content.innerHTML = `
+                <h2>현재 자산 분석 결과</h2>
+                <p>마이데이터를 기반으로 한 고객의 현재 자산 상태입니다.</p>
+                <div class="columns">
+                    <div class="column">
+                        <h3>총 자산</h3>
+                        <p>₩100,000,000</p>
+                    </div>
+                    <div class="column">
+                        <h3>부채</h3>
+                        <p>₩30,000,000</p>
+                    </div>
+                    <div class="column">
+                        <h3>순자산</h3>
+                        <p>₩70,000,000</p>
+                    </div>
+                </div>
+                <canvas id="assetChart"></canvas>
+            `;
+            // 자산 배분 차트 생성
+            const ctx = document.getElementById('assetChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['주식', '채권', '부동산', '현금'],
+                    datasets: [{
+                        label: '자산 배분',
+                        data: [40, 20, 30, 10],
+                        backgroundColor: ['#f7c948', '#4bc0c0', '#ff6384', '#36a2eb'],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        }
+
+        // 재정 계획 설정 차트
+        function showFinancialPlan() {
+            const content = document.getElementById("content");
+            content.innerHTML = `
+                <h2>재정 계획 설정</h2>
+                <p>마이데이터를 이용한 고객 맞춤형 재정 계획입니다.</p>
+                <div class="columns">
+                    <div class="column">
+                        <h3>목표 은퇴 나이</h3>
+                        <p>65세</p>
+                    </div>
+                    <div class="column">
+                        <h3>월 목표 은퇴 생활비</h3>
+                        <p>₩4,000,000</p>
+                    </div>
+                </div>
+                <canvas id="financialPlanChart"></canvas>
+            `;
+            // 투자 계획 차트 생성
+            const ctx = document.getElementById('financialPlanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['IRP 계좌', 'ISA 계좌', '비상금'],
+                    datasets: [{
+                        label: '투자 계획 (단위: 만원)',
+                        data: [3000, 2000, 500],
+                        backgroundColor: ['#f7c948', '#36a2eb', '#ff6384'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // 보험 추천 차트
+        function showInsuranceRecommendations() {
+            const content = document.getElementById("content");
+            content.innerHTML = `
+                <h2>보험 추천</h2>
+                <p>고객님의 위험 관리 전략에 따른 보험 추천입니다.</p>
+                <ul>
+                    <li>장기 요양 보험</li>
+                    <li>질병/사망 보험</li>
+                    <li>건강 보험</li>
+                </ul>
+                <canvas id="insuranceChart"></canvas>
+            `;
+            // 보험 가입 상태 차트 생성
+            const ctx = document.getElementById('insuranceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['가입된 보험', '미가입 보험'],
+                    datasets: [{
+                        label: '보험 상태',
+                        data: [70, 30],
+                        backgroundColor: ['#4bc0c0', '#ff6384'],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        }
+
+        // 정기 리포트 차트
+        function showRegularReports() {
+            const content = document.getElementById("content");
+            content.innerHTML = `
+                <h2>정기 리포트</h2>
+                <p>고객님의 자산 변화와 연금 납입 상태를 모니터링한 보고서입니다.</p>
+                <canvas id="reportChart"></canvas>
+            `;
+            // 자산 변화 차트 생성
+            const ctx = document.getElementById('reportChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                    datasets: [{
+                        label: '자산 변화 (단위: 만원)',
+                        data: [5000, 7000, 8000, 7500, 9000, 10000],
+                        fill: false,
+                        borderColor: '#f7c948',
+                        tension: 0.1
+                    }]
+                }
+            });
+        }
+    </script></head><body>
+
+<header>
+    <h1>
+                <header>
+    <h1> 마이데이터 은퇴설계 프로세스</h1>
+</header>
+
+<!-- CI 코드 입력 화면 -->
+<section class="section">
+    <h2>고객 식별 코드(CI)를 입력해주세요</h2>
+    <div class="input-container">
+        <input type="text" id="ciInput" placeholder="CI 코드 입력">
+        <button onclick="submitCI()">확인</button>
+    </div>
+    <p id="ciResult"></p>
+</section>
+
+<section class="section">
+    <h2>맞춤형 은퇴 준비 상태 분석</h2>
+    <p>고객님의 연금, 보험, 자산 데이터를 바탕으로 현재 은퇴 준비 상태를 분석하여 시각적으로 제공해 드립니다. 연금 수령액, 보험 혜택 등을 포함한 은퇴 자금 현황을 확인하세요.</p>
+    <a href="javascript:void(0);" class="button" onclick="showCurrentAssetAnalysis()">현재 자산 분석하기</a>
+</section>
+
+<section class="section">
+    <h2>예상 은퇴 생활비 및 자금 예측</h2>
+    <div class="columns">
+        <div class="column">
+            <h3>현재 생활비</h3>
+            <p>₩3,000,000 / 월</p>
+        </div>
+        <div class="column">
+            <h3>미래 생활비</h3>
+            <p>₩4,200,000 / 월</p>
+        </div>
+        <div class="column">
+            <h3>필요한 자금</h3>
+            <p>₩500,000,000</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>생애 단계별 재정 계획</h2>
+    <p>고객님의 나이, 은퇴 목표 시점에 맞춘 단계별 재정 계획을 수립해 드립니다. 저축 계획부터 투자 전략까지 맞춤형으로 제안합니다.</p>
+    <a href="javascript:void(0);" class="button" onclick="showFinancialPlan()">내 재정 계획 설정하기</a>
+</section>
+
+<section class="section">
+    <h2>리스크 관리 및 보험 추천</h2>
+    <p>리스크가 높은 부분을 분석하여 고객님의 재정 리스크를 최소화하고, 장기 요양 보험, 건강 보험 등 추천 상품을 안내해 드립니다.</p>
+    <a href="javascript:void(0);" class="button" onclick="showInsuranceRecommendations()">보험 추천 받기</a>
+</section>
+
+<section class="section">
+    <h2>정기 리포트 및 알림 서비스</h2>
+    <p>정기적으로 고객님의 자산 변화와 연금 납입 상태를 모니터링하여 보고서를 제공하며, 주요 이벤트에 대한 알림을 보내드립니다.</p>
+    <a href="javascript:void(0);" class="button" onclick="showRegularReports()">정기 리포트 확인하기</a>
+</section>
+
+<!-- 이곳에서 동적 콘텐츠를 보여줍니다 -->
+<section id="content" class="section">
+    <h2>여기에서 분석 결과가 나타납니다.</h2>
+</section>
+
+</body>
+</html>
+        
+        
+        
+        
+        
+        
+        
